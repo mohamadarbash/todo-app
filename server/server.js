@@ -30,7 +30,6 @@ app.get('/todos', (req, res) => {
 
 app.get('/todo/:id', (req, res) => {
 	var id = req.params['id'];
-	console.log('llkhkl',id);
 	if(!id) {
 		return res.status(404).send();
 	} else {
