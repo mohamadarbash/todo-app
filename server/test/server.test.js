@@ -5,7 +5,7 @@ const {ObjectID} = require('mongodb');
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
-const todos = [{_id: new ObjectID(), text: 'mimo'},{_id: new ObjectID(), text: 'memo'}];
+const todos = [{_id: new ObjectID(), text: 'mimo'},{_id: new ObjectID(), text: 'memo', completed: true, completedAt: 3}];
 
 beforeEach( (done) => {
 	Todo.deleteMany({}).then(() => {
@@ -72,9 +72,32 @@ describe('GET /todos', () => {
 
 
 
+
+
+describe('PATCH',() => {
+	it('should update the todo', (done) => {
+		const id = todos[1]._id.toHexString();
+		const text = "memo";
+		request(app)
+		.patch(`/todos/${id}`)
+		.send({completed: true, text: "memo"})
+		.expect(300)
+		.expect((res) => {
+			console.log(res.body.todo.completed);
+	    expect(res.body.todo.completed).toBe(false);
+		})
+		.end(done());
+	});
+	
+});
+
+
+
+
+
 describe('GET By ID /todo/:id ', () => {
 
-	it('should return 404 if todo not found', (done) => {
+/*	it('should return 404 if todo not found', (done) => {
 		const dummyID = new ObjectID();
 		request(app)
 		.get(`/todo/${dummyID.toHexString()}`)
@@ -92,12 +115,6 @@ describe('GET By ID /todo/:id ', () => {
 	});
 	*/
 });
-
-
-
-
-
-
 
 
 
